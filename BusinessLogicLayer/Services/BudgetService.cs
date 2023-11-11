@@ -47,9 +47,9 @@ namespace BusinessLogicLayer.Services
             return await _budgetRepository.GetBudgetsAsync();
         }
 
-        public Task UpdateBudgetAsync(Budget budget)
+        public async Task UpdateBudgetAsync(Budget budget)
         {
-            throw new NotImplementedException();
+            await _budgetRepository.UpdateBudgetAsync(budget);
         }
     }
 }

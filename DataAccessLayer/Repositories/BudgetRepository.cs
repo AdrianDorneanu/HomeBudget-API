@@ -44,9 +44,22 @@ namespace DataAccessLayer.Repositories
             return await _dbContext.Budgets.ToListAsync();
         }
 
-        public Task UpdateBudgetAsync(Budget budget)
+        public async Task UpdateBudgetAsync(Budget budget)
         {
-            throw new NotImplementedException();
+            var updatedBudget = new Budget()
+            {
+                Id = budget.Id,
+                Name = budget.Name,
+                TotalAmount = budget.TotalAmount,
+                AmountSpent = budget.AmountSpent,
+                CreatedAt   = budget.CreatedAt,
+                Date = budget.Date,
+                UpdatedAt = DateTime.Now,
+            };
+
+            _dbContext.Budgets.Update(updatedBudget);
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -56,5 +56,13 @@ namespace PresentationLayer.Controllers
 
             return Ok(id);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(Budget budget)
+        {
+            await _budgetService.UpdateBudgetAsync(budget);
+
+            return Ok(budget);
+        }
     }
 }
