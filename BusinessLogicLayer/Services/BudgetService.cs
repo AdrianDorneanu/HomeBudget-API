@@ -17,7 +17,7 @@ namespace BusinessLogicLayer.Services
         {
             var newBudget = await _budgetRepository.AddBudgetAsync(budget);
 
-            if (newBudget == null)
+            if (newBudget is null)
             {
                 return null;
             }
@@ -34,7 +34,7 @@ namespace BusinessLogicLayer.Services
         {
             var budget = await _budgetRepository.GetBudgetByIdAsync(id);
 
-            if (budget == null)
+            if (budget is null)
             {
                 return null;
             }
