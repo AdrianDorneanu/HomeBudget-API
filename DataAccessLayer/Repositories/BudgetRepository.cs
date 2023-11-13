@@ -32,6 +32,13 @@ namespace DataAccessLayer.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<Budget> GetBudgetByName(string name)
+        {
+            var budget = await _dbContext.Budgets.SingleOrDefaultAsync(b => b.Name == name);
+
+            return budget;
+        }
+
         public async Task<Budget> GetBudgetByIdAsync(Guid id)
         {
             var budget = await _dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == id);
@@ -46,18 +53,7 @@ namespace DataAccessLayer.Repositories
 
         public async Task UpdateBudgetAsync(Budget budget)
         {
-            var updatedBudget = new Budget()
-            {
-                Id = budget.Id,
-                Name = budget.Name,
-                TotalAmount = budget.TotalAmount,
-                AmountSpent = budget.AmountSpent,
-                CreatedAt   = budget.CreatedAt,
-                Date = budget.Date,
-                UpdatedAt = DateTime.Now,
-            };
-
-            _dbContext.Budgets.Update(updatedBudget);
+            _dbContext.Budgets.Update(budget);
 
             await _dbContext.SaveChangesAsync();
         }

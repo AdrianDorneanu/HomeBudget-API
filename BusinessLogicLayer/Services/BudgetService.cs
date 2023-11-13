@@ -15,12 +15,26 @@ namespace BusinessLogicLayer.Services
 
         public async Task<Budget?> AddBudgetAsync(Budget budget)
         {
-            var newBudget = await _budgetRepository.AddBudgetAsync(budget);
+            var existingBudget = await _budgetRepository.GetBudgetByName(budget.Name);
 
-            if (newBudget is null)
+            if (existingBudget is not null)
             {
-                return null;
+                throw new Exception("Budget already exists!");
             }
+
+            var newBudget = new Budget()
+            {
+                Id = new Guid(),
+                Name = budget.Name,
+                TotalAmount = budget.TotalAmount,
+                AmountSpent = budget.AmountSpent,
+                Date = budget.Date,
+                Expenses = Array.Empty<Expense>(),
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+            };
+
+            await _budgetRepository.AddBudgetAsync(newBudget);
 
             return newBudget;
         }
@@ -49,7 +63,18 @@ namespace BusinessLogicLayer.Services
 
         public async Task UpdateBudgetAsync(Budget budget)
         {
-            await _budgetRepository.UpdateBudgetAsync(budget);
+            var updatedBudget = new Budget()
+            {
+                Id = budget.Id,
+                Name = budget.Name,
+                TotalAmount = budget.TotalAmount,
+                AmountSpent = budget.AmountSpent,
+                CreatedAt = budget.CreatedAt,
+                Date = budget.Date,
+                UpdatedAt = DateTime.Now,
+            };
+
+            await _budgetRepository.UpdateBudgetAsync(updatedBudget);
         }
     }
 }

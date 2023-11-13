@@ -3,7 +3,7 @@
     public class Budget
     {
         public Guid Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public double TotalAmount { get; set; }
         public double AmountSpent { get; set; }
         public ICollection<Expense>? Expenses { get; set; }
