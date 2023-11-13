@@ -10,5 +10,6 @@ namespace DataAccessLayer.Data
             
         }
         public DbSet<Budget> Budgets { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
     }
 }
