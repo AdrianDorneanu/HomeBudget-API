@@ -14,10 +14,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+/**
+ * App DB Context
+**/
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+/**
+ * Repositories and Services
+**/
 builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
 builder.Services.AddScoped<IBudgetService, BudgetService>();
+
+builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+
+/**
+ * Rest of the application build
+**/
 
 var app = builder.Build();
 

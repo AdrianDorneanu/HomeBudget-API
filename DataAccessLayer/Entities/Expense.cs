@@ -9,6 +9,7 @@ namespace DataAccessLayer.Entities
     public class Expense
     {
         public Guid Id { get; set; }
+        public string Buyer {  get; set; }
         public string Name { get; set; }
         public double Amount{ get; set; }
         public Budget Budget { get; set; }

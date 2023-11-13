@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231113101929_CreateExpense")]
-    partial class CreateExpense
+    [Migration("20231113142944_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,10 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<Guid>("BudgetId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Buyer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");

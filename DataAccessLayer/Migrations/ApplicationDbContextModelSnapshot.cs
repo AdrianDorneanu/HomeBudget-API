@@ -63,6 +63,10 @@ namespace DataAccessLayer.Migrations
                     b.Property<Guid>("BudgetId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Buyer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -86,7 +90,7 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Entities.Expense", b =>
                 {
                     b.HasOne("DataAccessLayer.Entities.Budget", "Budget")
-                        .WithMany("TotalExpenses")
+                        .WithMany("Expenses")
                         .HasForeignKey("BudgetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -96,7 +100,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Entities.Budget", b =>
                 {
-                    b.Navigation("TotalExpenses");
+                    b.Navigation("Expenses");
                 });
 #pragma warning restore 612, 618
         }
