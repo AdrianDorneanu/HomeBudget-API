@@ -25,7 +25,7 @@ namespace BusinessLogicLayer.Services
 
         }
 
-        public async Task<BudgetDto?> AddBudgetAsync(BudgetDto budget)
+        public async Task<BudgetDto> AddBudgetAsync(BudgetDto budget)
         {
             var existingBudget = await _budgetRepository.GetBudgetByName(budget.Name);
 
@@ -50,12 +50,22 @@ namespace BusinessLogicLayer.Services
             return createdBudgetDto;
         }
 
-        public async Task DeleteBudgetByIdAsync(Guid id)
+        public async Task<BudgetDto> DeleteBudgetByIdAsync(Guid id)
         {
-            await _budgetRepository.DeleteBudgetByIdAsync(id);
+            var budget = await _budgetRepository.DeleteBudgetByIdAsync(id);
+
+            if (budget is null)
+            {
+                throw new Exception("Budget not found!");
+            }
+
+            BudgetDto budgetDto = _mapper.Map<Budget, BudgetDto>(budget);
+
+
+            return budgetDto;
         }
 
-        public async Task<BudgetDto?> GetBudgetByIdAsync(Guid id)
+        public async Task<BudgetDto> GetBudgetByIdAsync(Guid id)
         {
             var budget = await _budgetRepository.GetBudgetByIdAsync(id);
 
@@ -63,7 +73,7 @@ namespace BusinessLogicLayer.Services
 
             if (budgetDto is null)
             {
-                return null;
+                throw new Exception("Budget not found!");
             }
 
             return budgetDto;

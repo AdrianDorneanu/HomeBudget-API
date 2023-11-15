@@ -8,7 +8,7 @@ namespace DataAccessLayer.Interfaces
         Task<Budget> GetBudgetByIdAsync(Guid id);
         Task<Budget> AddBudgetAsync(Budget budget);
         Task<Budget> UpdateBudgetAsync(Budget budget);
-        Task DeleteBudgetByIdAsync(Guid id);
+        Task<Budget?> DeleteBudgetByIdAsync(Guid id);
         Task<Budget> GetBudgetByName(string name);
     }
 }

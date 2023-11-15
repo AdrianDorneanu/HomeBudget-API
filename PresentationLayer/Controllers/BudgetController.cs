@@ -26,35 +26,67 @@ namespace PresentationLayer.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var budget = await _budgetService.GetBudgetByIdAsync(id);
-
-            if (budget == null)
+            try
             {
-                return NotFound();
-            }
+                var budget = await _budgetService.GetBudgetByIdAsync(id);
 
-            return Ok(budget);
+                return Ok(budget);
+            }
+            catch (Exception ex)
+            {
+                switch (ex.Message)
+                {
+                    case "Budget not found!":
+                        {
+                            return NotFound();
+                        }
+                    default: return BadRequest(ex.Message);
+                }
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(BudgetDto budget)
         {
-            var newBudget = await _budgetService.AddBudgetAsync(budget);
-
-            if (newBudget == null)
+            try
             {
-                return BadRequest();
-            }
+                var newBudget = await _budgetService.AddBudgetAsync(budget);
 
-            return CreatedAtAction(nameof(Add), newBudget);
+                return CreatedAtAction(nameof(Add), newBudget);
+            }
+            catch (Exception ex)
+            {
+                switch (ex.Message)
+                {
+                    case "Budget already exists!":
+                        {
+                            return Conflict(ex.Message);
+                        }
+                    default: return BadRequest(ex.Message);
+                }
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(Guid id)
         {
-            await _budgetService.DeleteBudgetByIdAsync(id);
+            try
+            {
+                var budget = await _budgetService.DeleteBudgetByIdAsync(id);
 
-            return Ok(id);
+                return Ok(budget);
+            }
+            catch (Exception ex)
+            {
+                switch (ex.Message)
+                {
+                    case "Budget not found!":
+                        {
+                            return NotFound();
+                        }
+                    default: return BadRequest(ex.Message);
+                }
+            }
         }
 
         [HttpPut]

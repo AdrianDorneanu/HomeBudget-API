@@ -23,18 +23,25 @@ namespace DataAccessLayer.Repositories
             return budget;
         }
 
-        public async Task DeleteBudgetByIdAsync(Guid id)
+        public async Task<Budget?> DeleteBudgetByIdAsync(Guid id)
         {
             var budget = await _dbContext.Budgets.FirstOrDefaultAsync(b => b.Id == id);
 
-            _dbContext.Budgets.Remove(budget);
+            if (budget is not null)
+            {
+                _dbContext.Budgets.Remove(budget);
 
-            await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
+
+                return budget;
+            }
+
+            return null;
         }
 
         public async Task<Budget> GetBudgetByName(string name)
         {
-            var budget = await _dbContext.Budgets.SingleOrDefaultAsync(b => b.Name == name);
+            var budget = await _dbContext.Budgets.FirstOrDefaultAsync(b => b.Name == name);
 
             return budget;
         }
