@@ -1,5 +1,5 @@
-﻿using BusinessLogicLayer.Interfaces;
-using DataAccessLayer.Entities;
+﻿using BusinessLogicLayer.Dtos;
+using BusinessLogicLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -37,7 +37,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Budget budget)
+        public async Task<IActionResult> Add(BudgetDto budget)
         {
             var newBudget = await _budgetService.AddBudgetAsync(budget);
 
@@ -58,7 +58,7 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(Budget budget)
+        public async Task<IActionResult> Update(BudgetDto budget)
         {
             await _budgetService.UpdateBudgetAsync(budget);
 

@@ -1,4 +1,6 @@
-﻿using BusinessLogicLayer.Interfaces;
+﻿using AutoMapper;
+using BusinessLogicLayer.Dtos;
+using BusinessLogicLayer.Interfaces;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Interfaces;
 
@@ -7,13 +9,23 @@ namespace BusinessLogicLayer.Services
     public class BudgetService : IBudgetService
     {
         private readonly IBudgetRepository _budgetRepository;
+        private readonly IMapper _mapper;
 
         public BudgetService(IBudgetRepository budgetRepository)
         {
             _budgetRepository = budgetRepository;
+
+            var _configBudget = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Budget, BudgetDto>().ReverseMap();
+                cfg.CreateMap<Expense, ExpenseDto>().ReverseMap();
+            });
+
+            _mapper = new Mapper(_configBudget);
+
         }
 
-        public async Task<Budget?> AddBudgetAsync(Budget budget)
+        public async Task<BudgetDto?> AddBudgetAsync(BudgetDto budget)
         {
             var existingBudget = await _budgetRepository.GetBudgetByName(budget.Name);
 
@@ -22,21 +34,20 @@ namespace BusinessLogicLayer.Services
                 throw new Exception("Budget already exists!");
             }
 
-            var newBudget = new Budget()
+            var createdBudget = await _budgetRepository.AddBudgetAsync(new Budget
             {
                 Id = new Guid(),
                 Name = budget.Name,
                 TotalAmount = budget.TotalAmount,
                 AmountSpent = budget.AmountSpent,
                 Date = budget.Date,
-                Expenses = Array.Empty<Expense>(),
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
-            };
+            });
 
-            await _budgetRepository.AddBudgetAsync(newBudget);
+            BudgetDto createdBudgetDto = _mapper.Map<Budget, BudgetDto>(createdBudget);
 
-            return newBudget;
+            return createdBudgetDto;
         }
 
         public async Task DeleteBudgetByIdAsync(Guid id)
@@ -44,26 +55,32 @@ namespace BusinessLogicLayer.Services
             await _budgetRepository.DeleteBudgetByIdAsync(id);
         }
 
-        public async Task<Budget?> GetBudgetByIdAsync(Guid id)
+        public async Task<BudgetDto?> GetBudgetByIdAsync(Guid id)
         {
             var budget = await _budgetRepository.GetBudgetByIdAsync(id);
 
-            if (budget is null)
+            BudgetDto budgetDto = _mapper.Map<Budget, BudgetDto>(budget);
+
+            if (budgetDto is null)
             {
                 return null;
             }
 
-            return budget;
+            return budgetDto;
         }
 
-        public async Task<IEnumerable<Budget>> GetBudgetsAsync()
+        public async Task<IEnumerable<BudgetDto>> GetBudgetsAsync()
         {
-            return await _budgetRepository.GetBudgetsAsync();
+            var budgets = await _budgetRepository.GetBudgetsAsync();
+
+            IEnumerable<BudgetDto> budgetsDto = _mapper.Map<IEnumerable<Budget>, IEnumerable<BudgetDto>>(budgets);
+
+            return budgetsDto;
         }
 
-        public async Task UpdateBudgetAsync(Budget budget)
+        public async Task<BudgetDto> UpdateBudgetAsync(BudgetDto budget)
         {
-            var updatedBudget = new Budget()
+            var updatedBudget = await _budgetRepository.UpdateBudgetAsync(new Budget()
             {
                 Id = budget.Id,
                 Name = budget.Name,
@@ -72,9 +89,11 @@ namespace BusinessLogicLayer.Services
                 CreatedAt = budget.CreatedAt,
                 Date = budget.Date,
                 UpdatedAt = DateTime.Now,
-            };
+            });
 
-            await _budgetRepository.UpdateBudgetAsync(updatedBudget);
+            BudgetDto updatedBudgetDto = _mapper.Map<Budget, BudgetDto>(updatedBudget);
+
+            return updatedBudgetDto;
         }
     }
 }

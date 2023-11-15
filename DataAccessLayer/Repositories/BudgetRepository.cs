@@ -41,21 +41,23 @@ namespace DataAccessLayer.Repositories
 
         public async Task<Budget> GetBudgetByIdAsync(Guid id)
         {
-            var budget = await _dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == id);
+            var budget = await _dbContext.Budgets.Include(x => x.Expenses).FirstOrDefaultAsync(x => x.Id == id);
 
             return budget;
         }
 
         public async Task<IEnumerable<Budget>> GetBudgetsAsync()
         {
-            return await _dbContext.Budgets.Include(_ => _.Expenses).ToListAsync();
+            return await _dbContext.Budgets.Include(x => x.Expenses).ToListAsync();
         }
 
-        public async Task UpdateBudgetAsync(Budget budget)
+        public async Task<Budget> UpdateBudgetAsync(Budget budget)
         {
             _dbContext.Budgets.Update(budget);
 
             await _dbContext.SaveChangesAsync();
+
+            return budget;
         }
     }
 }

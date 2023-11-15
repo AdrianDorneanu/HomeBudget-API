@@ -1,13 +1,13 @@
-﻿using DataAccessLayer.Entities;
+﻿using BusinessLogicLayer.Dtos;
 
 namespace BusinessLogicLayer.Interfaces
 {
     public interface IBudgetService
     {
-        Task<IEnumerable<Budget>> GetBudgetsAsync();
-        Task<Budget?> GetBudgetByIdAsync(Guid id);
-        Task<Budget?> AddBudgetAsync(Budget budget);
-        Task UpdateBudgetAsync(Budget budget);
+        Task<IEnumerable<BudgetDto>> GetBudgetsAsync();
+        Task<BudgetDto?> GetBudgetByIdAsync(Guid id);
+        Task<BudgetDto?> AddBudgetAsync(BudgetDto budget);
+        Task<BudgetDto> UpdateBudgetAsync(BudgetDto budget);
         Task DeleteBudgetByIdAsync(Guid id);
     }
 }
