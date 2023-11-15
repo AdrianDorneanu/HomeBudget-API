@@ -1,5 +1,5 @@
-﻿using BusinessLogicLayer.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using BusinessLogicLayer.Dtos;
+using BusinessLogicLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -16,7 +16,8 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() {
+        public async Task<IActionResult> GetAll()
+        {
             var expenses = await _expenseService.GetExpensesAsync();
 
             return Ok(expenses);
@@ -28,6 +29,19 @@ namespace PresentationLayer.Controllers
             var expenses = await _expenseService.GetExpensesByBudgetAsync(id);
 
             return Ok(expenses);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(ExpenseDto expense)
+        {
+            var newExpense = await _expenseService.AddExpenseAsync(expense);
+
+            if (newExpense is null)
+            {
+                return BadRequest();
+            }
+
+            return CreatedAtAction(nameof(Add), newExpense);
         }
     }
 }

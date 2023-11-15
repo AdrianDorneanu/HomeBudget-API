@@ -1,9 +1,4 @@
 ﻿using DataAccessLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer.Interfaces
 {
@@ -11,5 +6,6 @@ namespace DataAccessLayer.Interfaces
     {
         Task<IEnumerable<Expense>> GetExpensesAsync();
         Task<IEnumerable<Expense>> GetExpensesByBudgetAsync(Guid id);
+        Task<Expense> AddExpenseAsync(Expense expense);
     }
 }

@@ -38,6 +38,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("TotalAmount")
@@ -70,7 +71,7 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("DateOfBuying")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")

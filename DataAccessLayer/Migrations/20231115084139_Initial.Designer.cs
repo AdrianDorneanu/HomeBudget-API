@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231113142944_Initial")]
+    [Migration("20231115084139_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -41,6 +41,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("TotalAmount")
@@ -73,7 +74,7 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("DateOfBuying")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")

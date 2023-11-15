@@ -1,15 +1,11 @@
-﻿using DataAccessLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BusinessLogicLayer.Dtos;
 
 namespace BusinessLogicLayer.Interfaces
 {
     public interface IExpenseService
     {
-        Task<IEnumerable<Expense>> GetExpensesAsync();
-        Task<IEnumerable<Expense>> GetExpensesByBudgetAsync(Guid id);
+        Task<IEnumerable<ExpenseDto>> GetExpensesAsync();
+        Task<IEnumerable<ExpenseDto>> GetExpensesByBudgetAsync(Guid id);
+        Task<ExpenseDto> AddExpenseAsync(ExpenseDto expense);
     }
 }

@@ -48,7 +48,7 @@ namespace DataAccessLayer.Repositories
 
         public async Task<IEnumerable<Budget>> GetBudgetsAsync()
         {
-            return await _dbContext.Budgets.ToListAsync();
+            return await _dbContext.Budgets.Include(_ => _.Expenses).ToListAsync();
         }
 
         public async Task UpdateBudgetAsync(Budget budget)

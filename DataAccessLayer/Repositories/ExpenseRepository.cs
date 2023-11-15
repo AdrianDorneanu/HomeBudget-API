@@ -2,11 +2,6 @@
 using DataAccessLayer.Entities;
 using DataAccessLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
@@ -29,6 +24,15 @@ namespace DataAccessLayer.Repositories
             var expenses = await _dbContext.Expenses.Where(x => x.Budget.Id == id).ToListAsync();
 
             return expenses;
+        }
+
+        public async Task<Expense> AddExpenseAsync(Expense expense)
+        {
+            _dbContext.Expenses.Add(expense);
+
+            await _dbContext.SaveChangesAsync();
+
+            return expense;
         }
     }
 }

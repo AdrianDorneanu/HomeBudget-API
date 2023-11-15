@@ -1,6 +1,6 @@
-﻿namespace DataAccessLayer.Entities
+﻿namespace BusinessLogicLayer.Dtos
 {
-    public class Budget
+    public class BudgetDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -9,6 +9,6 @@
         public DateTime Date { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public ICollection<Expense>? Expenses { get; set; }
+        public ICollection<ExpenseDto> Expenses { get; set; }
     }
 }
