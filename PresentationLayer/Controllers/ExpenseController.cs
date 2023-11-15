@@ -34,14 +34,17 @@ namespace PresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ExpenseDto expense)
         {
-            var newExpense = await _expenseService.AddExpenseAsync(expense);
-
-            if (newExpense is null)
+            try
             {
-                return BadRequest();
+                var newExpense = await _expenseService.AddExpenseAsync(expense);
+
+                return CreatedAtAction(nameof(Add), newExpense);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
 
-            return CreatedAtAction(nameof(Add), newExpense);
         }
     }
 }
