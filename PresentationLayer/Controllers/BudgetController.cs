@@ -1,6 +1,7 @@
 ﻿using BusinessLogicLayer.Dtos;
 using BusinessLogicLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace PresentationLayer.Controllers
 {
@@ -23,7 +24,7 @@ namespace PresentationLayer.Controllers
             return Ok(budgets);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             try
@@ -42,6 +43,20 @@ namespace PresentationLayer.Controllers
                         }
                     default: return BadRequest(ex.Message);
                 }
+            }
+        }
+        [HttpGet("{date:DateTime}")]
+        public async Task<IActionResult> GetByMonth(DateTime date)
+        {
+            try
+            {
+                var budget = await _budgetService.GetBudgetsByMonthAsync(date);
+
+                return Ok(budget);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

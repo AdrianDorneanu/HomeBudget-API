@@ -9,6 +9,21 @@ namespace DataAccessLayer.Repositories
     {
         private readonly ApplicationDbContext _dbContext;
 
+        private static DateTime FirstDayOfTheMonth(DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, 1);
+        }
+
+        private static int DaysInMonth(DateTime date)
+        {
+            return DateTime.DaysInMonth(date.Year, date.Month);
+        }
+
+        private static DateTime LastDayOfTheMonth(DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, DaysInMonth(date));
+        }
+
         public BudgetRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -39,9 +54,9 @@ namespace DataAccessLayer.Repositories
             return null;
         }
 
-        public async Task<Budget> GetBudgetByName(string name)
+        public async Task<Budget> GetBudgetByName(string name, DateTime date)
         {
-            var budget = await _dbContext.Budgets.FirstOrDefaultAsync(b => b.Name == name);
+            var budget = await _dbContext.Budgets.Where(budget => budget.Name == name && budget.Date.Month == date.Month).FirstOrDefaultAsync();
 
             return budget;
         }
@@ -65,6 +80,11 @@ namespace DataAccessLayer.Repositories
             await _dbContext.SaveChangesAsync();
 
             return budget;
+        }
+
+        public async Task<IEnumerable<Budget>> GetBudgetsByMonthAsync(DateTime date)
+        {
+            return await _dbContext.Budgets.Include(x => x.Expenses).Where(budget => FirstDayOfTheMonth(date) <= budget.Date && LastDayOfTheMonth(date) >= budget.Date).ToListAsync();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace BusinessLogicLayer.Services
 
         public async Task<BudgetDto> AddBudgetAsync(BudgetDto budget)
         {
-            var existingBudget = await _budgetRepository.GetBudgetByName(budget.Name);
+            var existingBudget = await _budgetRepository.GetBudgetByName(budget.Name, budget.Date);
 
             if (existingBudget is not null)
             {
@@ -105,5 +105,14 @@ namespace BusinessLogicLayer.Services
 
             return updatedBudgetDto;
         }
+        public async Task<IEnumerable<BudgetDto>> GetBudgetsByMonthAsync(DateTime date)
+        {
+            var budgets = await _budgetRepository.GetBudgetsByMonthAsync(date);
+
+            IEnumerable<BudgetDto> budgetsDto = _mapper.Map<IEnumerable<Budget>, IEnumerable<BudgetDto>>(budgets);
+
+            return budgetsDto;
+        }
+
     }
 }
