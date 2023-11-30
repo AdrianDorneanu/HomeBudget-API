@@ -45,6 +45,7 @@ namespace PresentationLayer.Controllers
                 }
             }
         }
+
         [HttpGet("{date:DateTime}")]
         public async Task<IActionResult> GetByMonth(DateTime date)
         {

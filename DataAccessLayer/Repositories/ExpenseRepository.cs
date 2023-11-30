@@ -25,10 +25,26 @@ namespace DataAccessLayer.Repositories
 
             return expenses;
         }
+        public async Task<Expense> GetExpenseById(Guid id)
+        {
+            var expense = await _dbContext.Expenses.FirstOrDefaultAsync(x => x.Id == id);
+
+            return expense;
+        }
 
         public async Task<Expense> AddExpenseAsync(Expense expense)
         {
             _dbContext.Expenses.Add(expense);
+
+            await _dbContext.SaveChangesAsync();
+
+            return expense;
+        }
+        public async Task<Expense> DeleteExpenseByIdAsync(Guid id)
+        {
+            var expense = await _dbContext.Expenses.FirstAsync(expense => expense.Id == id);
+
+            _dbContext.Expenses.Remove(expense);
 
             await _dbContext.SaveChangesAsync();
 

@@ -21,7 +21,7 @@ namespace DataAccessLayer.Repositories
 
         private static DateTime LastDayOfTheMonth(DateTime date)
         {
-            return new DateTime(date.Year, date.Month, DaysInMonth(date));
+            return new DateTime(date.Year, date.Month, DaysInMonth(date), 23, 59, 59);
         }
 
         public BudgetRepository(ApplicationDbContext dbContext)

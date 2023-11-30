@@ -46,5 +46,20 @@ namespace PresentationLayer.Controllers
             }
 
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteById(Guid id)
+        {
+            try
+            {
+                var expense = await _expenseService.DeleteExpenseByIdAsync(id);
+
+                return Ok(expense);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

@@ -22,6 +22,19 @@ namespace BusinessLogicLayer.Services
             _mapper = new Mapper(_configExpense);
         }
 
+        private async Task UpdateBudgetAmountWithNewAmount(ExpenseDto expense)
+        {
+            var budget = await _budgetRepository.GetBudgetByIdAsync(expense.BudgetId);
+
+            if (budget.TotalAmount == 0)
+            {
+                throw new Exception("Total amount for this budget is 0!");
+            }
+
+            budget.AmountSpent = budget.AmountSpent + expense.Amount;
+            budget.TotalAmount = budget.TotalAmount - expense.Amount;
+        }
+
         public async Task<ExpenseDto> AddExpenseAsync(ExpenseDto expense)
         {
             var newExpense = new Expense()
@@ -62,17 +75,19 @@ namespace BusinessLogicLayer.Services
             return expensesDto;
         }
 
-        private async Task UpdateBudgetAmountWithNewAmount(ExpenseDto expense)
+        public async Task<ExpenseDto> DeleteExpenseByIdAsync(Guid id)
         {
+            var expense = await _expenseRepository.GetExpenseById(id);
             var budget = await _budgetRepository.GetBudgetByIdAsync(expense.BudgetId);
 
-            if (budget.TotalAmount == 0)
-            {
-                throw new Exception("Total amount for this budget is 0!");
-            }
+            budget.TotalAmount += expense.Amount;
+            budget.AmountSpent -= expense.Amount;
 
-            budget.AmountSpent = budget.AmountSpent + expense.Amount;
-            budget.TotalAmount = budget.TotalAmount - expense.Amount;
+            var deletedExpense = await _expenseRepository.DeleteExpenseByIdAsync(id);
+
+            ExpenseDto deletedExpenseDto = _mapper.Map<Expense, ExpenseDto>(deletedExpense);
+
+            return deletedExpenseDto;
         }
     }
 }
