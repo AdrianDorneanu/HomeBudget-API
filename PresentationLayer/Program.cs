@@ -33,7 +33,7 @@ builder.Services.AddCors(options =>
     // this defines a CORS policy called "default"
     options.AddPolicy("default", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000", "https://home-budget-frontend.vercel.app/")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
