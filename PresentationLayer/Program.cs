@@ -3,7 +3,6 @@ using BusinessLogicLayer.Services;
 using DataAccessLayer.Data;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Repositories;
-using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +22,9 @@ builder.Services.AddSwaggerGen();
 /**
  * App DB Context
  **/
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var sqlConnection = builder.Configuration["ConnectionStrings:Adrian:SqlDB"];
+
+builder.Services.AddSqlServer<ApplicationDbContext>(sqlConnection, options => options.EnableRetryOnFailure());
 
 /**
  * CORS
@@ -53,6 +54,8 @@ builder.Services.AddScoped<IExpenseService, ExpenseService>();
 **/
 
 var app = builder.Build();
+
+app.CreateDbIfNotExists();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

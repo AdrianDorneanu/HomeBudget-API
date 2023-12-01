@@ -5,12 +5,9 @@ namespace DataAccessLayer.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
-        public DbSet<Budget> Budgets { get; set; }
-        public DbSet<Expense> Expenses { get; set; }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public DbSet<Budget> Budgets => Set<Budget>();
+        public DbSet<Expense> Expenses => Set<Expense>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
